@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+
+require 'http_machinegun'
+HttpMachinegun::Machinegun.start
