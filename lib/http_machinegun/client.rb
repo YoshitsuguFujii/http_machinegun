@@ -5,7 +5,12 @@ require 'uri'
 require 'json'
 
 module HttpMachinegun
-  module Client
+  class Client
+
+    BASE_HEADERS = {
+      #'content-type'=>'application/json'
+      'content-type'=>'text/plain'
+    }
 
     def initialize(url, port = 80, send_data = "")
       @url = url
@@ -19,19 +24,37 @@ module HttpMachinegun
       end
     end
 
+    def http_method(method)
+      case method.to_sym
+      when :get
+        @request_body = Net::HTTP::Get.new('/')
+      when :post
+        @request_body = Net::HTTP::Post.new('/', BASE_HEADERS)
+      when :put
+        @request_body = Net::HTTP::Put.new('/', BASE_HEADERS)
+      when :delete
+        @request_body = Net::HTTP::Delete.new('/')
+      else
+        @request_body = Net::HTTP::Get.new('/')
+      end
+    end
+
+    def set_body
+      @request_body.body = @send_data.to_json
+    end
+
     def execute()
       Net::HTTP.start(@url, @port) do |http|
-        response = http.request(@send_data)
+        response = http.request(@request_body)
         if response.code =~ /^[^2]..$/
           case response.code
           when '400'
-            raise BadRequestException
+            "BadRequestException"
           when '401'
-            raise UnauthorizedException
+            "UnauthorizedException"
           when '404'
-            raise NotFoundException
+            "NotFoundException"
           else
-            raise GeneralFailureException
           end
         end
 

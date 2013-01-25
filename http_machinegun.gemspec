@@ -16,4 +16,5 @@ Gem::Specification.new do |gem|
   gem.version       = HttpMachinegun::VERSION
 
   gem.add_dependency 'thor'
+  gem.add_dependency 'parallel'
 end

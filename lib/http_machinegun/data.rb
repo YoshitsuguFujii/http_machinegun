@@ -1,15 +1,20 @@
 # coding: utf-8
 
 module HttpMachinegun
-  module Data
+  class Data
 
     attr_accessor :data
 
     def initialize(_data)
-require 'ruby-debug'
-debugger
-p '######'
-      Pathname.new(_data)
+      self.data =  if file = Pathname.new(_data).exist?
+                file.open.read
+              else
+                _data
+              end
+    end
+
+    def to_s
+      self.data
     end
 
   end

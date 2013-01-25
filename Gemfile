@@ -4,5 +4,5 @@ source 'https://rubygems.org'
 gemspec
 
 group :development, :test do
-  gem 'ruby-debug19'
+  gem "pry-debugger", "~> 0.2.1"
 end
