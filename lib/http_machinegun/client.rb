@@ -13,6 +13,8 @@ module HttpMachinegun
     }
 
     def initialize(url, port = 80, send_data = "")
+      raise ArgumentError if url.nil?
+
       @url = url
       @port = port
       @send_data = send_data
@@ -20,8 +22,17 @@ module HttpMachinegun
 
     def basic_auth(username, password)
       if username && password
-        @send_data.basic_auth username, password
+        @request_body.basic_auth username, password
+      else
+        raise ArgumentError
       end
+
+      self
+    rescue NoMethodError => ex
+      puts "【error】set http medhod type before call"
+      #@request_body = Net::HTTP::Get.new('/')
+      #retry
+      raise ex
     end
 
     def http_method(method)
@@ -37,10 +48,14 @@ module HttpMachinegun
       else
         @request_body = Net::HTTP::Get.new('/')
       end
+
+      self
     end
 
     def set_body
       @request_body.body = @send_data.to_json
+
+      self
     end
 
     def execute()
@@ -58,9 +73,6 @@ module HttpMachinegun
           end
         end
 
-        def response.data
-          JSON.parse body
-        end
         response
       end
     end

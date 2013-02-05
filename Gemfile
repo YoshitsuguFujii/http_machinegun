@@ -5,4 +5,10 @@ gemspec
 
 group :development, :test do
   gem "pry-debugger", "~> 0.2.1"
+  gem 'rspec'
+  gem 'webmock'
+
+  gem 'rb-fsevent'
+  gem 'guard-rspec'
+  gem 'growl'
 end

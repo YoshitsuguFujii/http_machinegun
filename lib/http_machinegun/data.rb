@@ -6,7 +6,8 @@ module HttpMachinegun
     attr_accessor :data
 
     def initialize(_data)
-      self.data =  if file = Pathname.new(_data).exist?
+      file = Pathname.new(_data)
+      self.data =  if file.exist?
                 file.open.read
               else
                 _data
