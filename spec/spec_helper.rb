@@ -3,6 +3,10 @@ require 'rubygems'
 require 'http_machinegun'
 require 'webmock/rspec'
 require 'stringio'
+require 'simplecov'
+require 'simplecov-rcov'
+SimpleCov.formatter = SimpleCov::Formatter::RcovFormatter
+SimpleCov.start
 
 # Set shell to basic
 $0 = "thor"

@@ -11,4 +11,7 @@ group :development, :test do
   gem 'rb-fsevent'
   gem 'guard-rspec'
   gem 'growl'
+
+  gem 'simplecov', :require => false
+  gem 'simplecov-rcov', :require => false
 end

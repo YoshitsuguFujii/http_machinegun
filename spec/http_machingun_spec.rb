@@ -18,9 +18,6 @@ describe HttpMachinegun do
     stub_request(:delete , url_fully).to_return(:body => 'succeed delete request')
     stub_request(:get    , "http://" + url + ":" + port.to_s + "/").to_return(:body => 'succeed get request')
   end
-  def shell
-    @shell ||= Thor::Shell::Basic.new
-  end
 
   context "argument" do
     context "url" do
