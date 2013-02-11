@@ -1,5 +1,5 @@
 require "thor"
-#require "pry"
+require "pry"
 #require 'benchmark'
 require 'parallel'
 require "http_machinegun/data"
@@ -12,7 +12,7 @@ module HttpMachinegun
   class Machinegun < Thor
     desc "fire", "send data A number of specified thread "
     method_option :url , :type => :string, :required => true, :aliases => "-u"
-    method_option :port, :type => :numeric, :default => 80, :aliases => "-p"
+    method_option :port, :type => :numeric, :aliases => "-p"
     method_option :data_or_file_path, :type => :string, :default => "", :aliases => "-d"
     method_option :method, :type => :string, :default => "get", :aliases => "-m"
     method_option :thread_number , :type => :numeric, :default => 1, :aliases => "-t"

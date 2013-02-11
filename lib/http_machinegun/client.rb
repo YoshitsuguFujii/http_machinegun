@@ -6,17 +6,18 @@ require 'json'
 
 module HttpMachinegun
   class Client
+    DEFAULT_PORT = 80
 
     BASE_HEADERS = {
       #'content-type'=>'application/json'
       'content-type'=>'text/plain'
     }
 
-    def initialize(url, port = 80, send_data = "")
+    def initialize(url, port, send_data = "")
       raise ArgumentError if url.nil?
 
-      @url = url
-      @port = port
+      @url = URI.parse(url)
+      @port = port || @url.port || DEFAULT_PORT
       @send_data = send_data
     end
 
@@ -36,17 +37,18 @@ module HttpMachinegun
     end
 
     def http_method(method)
+      path = @url.path.empty? ?  "/" : @url.path
       case method.to_sym
       when :get
-        @request_body = Net::HTTP::Get.new('/')
+        @request_body = Net::HTTP::Get.new(path)
       when :post
-        @request_body = Net::HTTP::Post.new('/', BASE_HEADERS)
+        @request_body = Net::HTTP::Post.new(path, BASE_HEADERS)
       when :put
-        @request_body = Net::HTTP::Put.new('/', BASE_HEADERS)
+        @request_body = Net::HTTP::Put.new(path, BASE_HEADERS)
       when :delete
-        @request_body = Net::HTTP::Delete.new('/')
+        @request_body = Net::HTTP::Delete.new(path)
       else
-        @request_body = Net::HTTP::Get.new('/')
+        @request_body = Net::HTTP::Get.new(path)
       end
 
       self
@@ -59,7 +61,7 @@ module HttpMachinegun
     end
 
     def execute()
-      Net::HTTP.start(@url, @port) do |http|
+      Net::HTTP.start(@url.host, @port) do |http|
         response = http.request(@request_body)
         if response.code =~ /^[^2]..$/
           case response.code

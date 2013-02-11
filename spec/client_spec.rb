@@ -2,7 +2,7 @@
 require 'spec_helper'
 
 describe HttpMachinegun::Client do
-  let(:url) { "example.com" }
+  let(:url) { "http://example.com" }
   let(:url_fully) { "http://example.com:8080/" }
   let(:port) { 8080 }
   let(:send_data) { "abcdefg" }
@@ -24,7 +24,7 @@ describe HttpMachinegun::Client do
     end
 
     context "normal" do
-      it { @client.instance_variable_get("@url").should eql url }
+      it { @client.instance_variable_get("@url").to_s.should eql url }
       it { @client.instance_variable_get("@port").should eql port }
       it { @client.instance_variable_get("@send_data").should eql send_data }
     end

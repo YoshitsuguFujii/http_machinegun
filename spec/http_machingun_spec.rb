@@ -2,7 +2,7 @@
 require 'spec_helper'
 
 describe HttpMachinegun do
-  let(:url) { "example.com" }
+  let(:url) { "http://example.com" }
   let(:url_fully) { "http://example.com:80/" }
   let(:port) { 3000 }
   let(:send_data) { "abcdefg" }
@@ -16,7 +16,7 @@ describe HttpMachinegun do
     stub_request(:post   , url_fully).to_return{|req| { :body => "succeed post request and request body #{send_data}" } }
     stub_request(:put    , url_fully).to_return{|req| { :body => "succeed put request and request body #{send_data}" } }
     stub_request(:delete , url_fully).to_return(:body => 'succeed delete request')
-    stub_request(:get    , "http://" + url + ":" + port.to_s + "/").to_return(:body => 'succeed get request')
+    stub_request(:get    , url + ":" + port.to_s + "/").to_return(:body => 'succeed get request')
   end
 
   context "argument" do
@@ -39,7 +39,7 @@ describe HttpMachinegun do
       context "parameter is correct" do
         subject{ HttpMachinegun::Machinegun.start(["fire","--url", url]) }
 
-        it { subject.first.instance_variable_get("@url").should eq url }
+        it { subject.first.instance_variable_get("@url").to_s.should eq url }
         it { subject.first.instance_variable_get("@port").should eq default_port }
         it { subject.first.instance_variable_get("@request_body").should be_instance_of(Net::HTTP::Get) }
         it { subject.first.instance_variable_get("@send_data").should be_instance_of(HttpMachinegun::Data) }
@@ -67,7 +67,7 @@ describe HttpMachinegun do
       context "parameter is correct" do
         subject{ HttpMachinegun::Machinegun.start(["fire","--url", url, "--port", port]) }
 
-        it { subject.first.instance_variable_get("@url").should eq url }
+        it { subject.first.instance_variable_get("@url").to_s.should eq url }
         it { subject.first.instance_variable_get("@port").should eq port }
         it { subject.first.instance_variable_get("@request_body").should be_instance_of(Net::HTTP::Get) }
         it { subject.first.instance_variable_get("@send_data").should be_instance_of(HttpMachinegun::Data) }
@@ -95,7 +95,7 @@ describe HttpMachinegun do
       context "parameter is correct" do
         subject{ HttpMachinegun::Machinegun.start(["fire","--url", url, "--port", port, "--data_or_file_path", send_data]) }
 
-        it { subject.first.instance_variable_get("@url").should eq url }
+        it { subject.first.instance_variable_get("@url").to_s.should eq url }
         it { subject.first.instance_variable_get("@port").should eq port }
         it { subject.first.instance_variable_get("@request_body").should be_instance_of(Net::HTTP::Get) }
         it { subject.first.instance_variable_get("@send_data").should be_instance_of(HttpMachinegun::Data) }
@@ -124,7 +124,7 @@ describe HttpMachinegun do
         context "get session" do
           subject{ HttpMachinegun::Machinegun.start(["fire","--url", url, "--port", port, "--data_or_file_path", send_data, "--method", :get]) }
 
-          it { subject.first.instance_variable_get("@url").should eq url }
+          it { subject.first.instance_variable_get("@url").to_s.should eq url }
           it { subject.first.instance_variable_get("@port").should eq port }
           it { subject.first.instance_variable_get("@request_body").should be_instance_of(Net::HTTP::Get) }
           it { subject.first.instance_variable_get("@send_data").should be_instance_of(HttpMachinegun::Data) }
@@ -135,7 +135,7 @@ describe HttpMachinegun do
         context "post session" do
           subject{ HttpMachinegun::Machinegun.start(["fire","--url", url, "--data_or_file_path", send_data, "--method", :post]) }
 
-          it { subject.first.instance_variable_get("@url").should eq url }
+          it { subject.first.instance_variable_get("@url").to_s.should eq url }
           it { subject.first.instance_variable_get("@port").should eq default_port }
           it { subject.first.instance_variable_get("@request_body").should be_instance_of(Net::HTTP::Post) }
           it { subject.first.instance_variable_get("@send_data").should be_instance_of(HttpMachinegun::Data) }
@@ -146,7 +146,7 @@ describe HttpMachinegun do
         context "put session" do
           subject{ HttpMachinegun::Machinegun.start(["fire","--url", url, "--data_or_file_path", send_data, "--method", :put]) }
 
-          it { subject.first.instance_variable_get("@url").should eq url }
+          it { subject.first.instance_variable_get("@url").to_s.should eq url }
           it { subject.first.instance_variable_get("@port").should eq default_port }
           it { subject.first.instance_variable_get("@request_body").should be_instance_of(Net::HTTP::Put) }
           it { subject.first.instance_variable_get("@send_data").should be_instance_of(HttpMachinegun::Data) }
@@ -157,7 +157,7 @@ describe HttpMachinegun do
         context "delete session" do
           subject{ HttpMachinegun::Machinegun.start(["fire","--url", url, "--data_or_file_path", send_data, "--method", :delete]) }
 
-          it { subject.first.instance_variable_get("@url").should eq url }
+          it { subject.first.instance_variable_get("@url").to_s.should eq url }
           it { subject.first.instance_variable_get("@port").should eq default_port }
           it { subject.first.instance_variable_get("@request_body").should be_instance_of(Net::HTTP::Delete) }
           it { subject.first.instance_variable_get("@send_data").should be_instance_of(HttpMachinegun::Data) }
@@ -186,7 +186,7 @@ describe HttpMachinegun do
       context "parameter is correct" do
         subject{ HttpMachinegun::Machinegun.start(["fire","--url", url, "--thread_number", 10, "--data_or_file_path", send_data]) }
 
-        it { subject.first.instance_variable_get("@url").should eq url }
+        it { subject.first.instance_variable_get("@url").to_s.should eq url }
         it { subject.first.instance_variable_get("@port").should eq default_port }
         it { subject.first.instance_variable_get("@request_body").should be_instance_of(Net::HTTP::Get) }
         it { subject.first.instance_variable_get("@send_data").should be_instance_of(HttpMachinegun::Data) }
