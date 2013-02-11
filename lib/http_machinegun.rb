@@ -1,5 +1,5 @@
 require "thor"
-require "pry"
+#require "pry"
 #require 'benchmark'
 require 'parallel'
 require "http_machinegun/data"

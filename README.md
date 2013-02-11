@@ -15,34 +15,34 @@ http_machinegun fire -u #{url}
 
 ```ruby
 #simple get request by one times
-http_machinegun fire -u localhost
+http_machinegun fire -u http://localhost
 
 #get request to 3000 port option by one times
-http_machinegun fire -u localhost -p 3000
+http_machinegun fire -u http://localhost -p 3000
 
 #post request with data by one times
-http_machinegun fire -u localhost -d abc -m post
+http_machinegun fire -u http://localhost -d abc -m post
 #or
-http_machinegun fire -u localhost -d data.txt
+http_machinegun fire -u http://localhost -d data.txt
 
 #get request with data by ten times
-http_machinegun fire -u localhost -t 10
+http_machinegun fire -u http://localhost -t 10
 ```
 
 ###options
-* -u, --url   
-target url   
+* -u, --url
+target url
 
-* -p, --port  
-target port  
-  
-* -d, --data_or_file   
-string or file path  
+* -p, --port
+target port
 
-* -m, --method  
-http method (get,post,put,delete )  
-  
-* -t, --thread_number  
-request number of times you want    
+* -d, --data_or_file
+string or file path
+
+* -m, --method
+http method (get,post,put,delete )
+
+* -t, --thread_number
+request number of times you want
 
 
