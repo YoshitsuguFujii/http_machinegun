@@ -4,6 +4,7 @@ require 'spec_helper'
 describe HttpMachinegun::Client do
   let(:url) { "http://example.com" }
   let(:url_fully) { "http://example.com:8080/" }
+  let(:sub_url) { "http://example.com:8080/sub.html" }
   let(:port) { 8080 }
   let(:send_data) { "abcdefg" }
   before do
@@ -12,6 +13,7 @@ describe HttpMachinegun::Client do
     stub_request(:post   , url_fully).to_return{|req| { :body => "succeed post request and request body #{send_data}" } }
     stub_request(:put    , url_fully).to_return{|req| { :body => "succeed put request and request body #{send_data}" } }
     stub_request(:delete , url_fully).to_return(:body => 'succeed delete request')
+    stub_request(:get , sub_url).to_return(:body => "succeed get request to #{sub_url}")
   end
 
   context "base header" do
@@ -83,5 +85,11 @@ describe HttpMachinegun::Client do
       it { subject.code.should eql "200" }
       it { subject.body.should eql "succeed delete request" }
     end
+  end
+
+  context "access below root path" do
+    subject { HttpMachinegun::Client.new(sub_url, port, send_data).http_method(:get).set_body.execute }
+    it { subject.code.should eql "200" }
+    it { subject.body.should eql "succeed get request to #{sub_url}" }
   end
 end

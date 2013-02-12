@@ -29,9 +29,9 @@ module HttpMachinegun
       results = Parallel.each(clients, :in_threads => Parallel.processor_count) {|url|
         res = client.execute
         if res.code =~ /^[^2]..$/
-         say("http_status_code:" + res.code, :red)
+          say("http_status_code:" + res.code + "\n", :red)
         else
-         say("http_status_code:" + res.code, :green)
+          say("http_status_code:" + res.code + "\n", :green)
         end
 
         res
